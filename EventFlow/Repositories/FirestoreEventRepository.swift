@@ -90,6 +90,17 @@ class FirestoreEventRepository: EventRepository {
     /// - Parameter event: 更新するイベント
     /// - Throws: Firestoreエラー
     func updateEvent(_ event: Event) async throws {
+        // ネットワーク接続をチェック
+        if !NetworkMonitor.shared.isConnected {
+            // オフライン時はキューに追加
+            try queueOfflineChange(changeType: .update, event: event)
+            
+            #if DEBUG
+            print("📝 Event update queued for offline sync: \(event.id)")
+            #endif
+            return
+        }
+        
         let db = firebaseManager.getFirestore()
         let docRef = db.collection(collectionPath).document(event.id)
         
@@ -99,6 +110,9 @@ class FirestoreEventRepository: EventRepository {
             eventData["updatedAt"] = Timestamp(date: Date())
             
             try await docRef.setData(eventData, merge: true)
+            
+            // 成功したらキャッシュも更新
+            LocalCacheManager.shared.cacheEvent(event)
             
             #if DEBUG
             print("✅ Event updated: \(event.id)")

@@ -103,6 +103,17 @@ class FirestoreTaskRepository: TaskRepository {
     ///   - eventId: タスクが属するイベントのID
     /// - Throws: Firestoreエラー
     func updateTask(_ task: Task, eventId: String) async throws {
+        // ネットワーク接続をチェック
+        if !NetworkMonitor.shared.isConnected {
+            // オフライン時はキューに追加
+            try queueOfflineChange(changeType: .update, task: task, eventId: eventId)
+            
+            #if DEBUG
+            print("📝 Task update queued for offline sync: \(task.id)")
+            #endif
+            return
+        }
+        
         let db = firebaseManager.getFirestore()
         let docRef = db.collection(eventsCollectionPath)
             .document(eventId)
@@ -115,6 +126,9 @@ class FirestoreTaskRepository: TaskRepository {
             taskData["updatedAt"] = Timestamp(date: Date())
             
             try await docRef.setData(taskData, merge: true)
+            
+            // 成功したらキャッシュも更新
+            LocalCacheManager.shared.cacheTask(task, eventId: eventId)
             
             #if DEBUG
             print("✅ Task updated: \(task.id) in event: \(eventId)")

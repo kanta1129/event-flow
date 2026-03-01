@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="EventFlow - イベントタスク管理">
+    <title>EventFlow - タスク選択</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <header class="header">
+            <h1 class="header-title">EventFlow</h1>
+            <p class="header-subtitle">イベントタスクを選択してください</p>
+        </header>
+
+        <!-- 参加者名入力セクション -->
+        <section id="name-input-section" class="name-input-section">
+            <div class="name-input-card">
+                <h2>参加者名を入力</h2>
+                <p class="input-description">タスクを引き受ける前に、お名前を入力してください</p>
+                <input 
+                    type="text" 
+                    id="participant-name" 
+                    class="name-input" 
+                    placeholder="山田太郎"
+                    maxlength="50"
+                    autocomplete="name"
+                >
+                <button id="name-submit-btn" class="btn btn-primary">次へ</button>
+            </div>
+        </section>
+
+        <!-- タスクカード表示エリア -->
+        <section id="task-cards-section" class="task-cards-section hidden">
+            <div class="task-cards-container">
+                <div id="task-cards" class="task-cards">
+                    <!-- タスクカードが動的に追加されます -->
+                </div>
+                <div class="swipe-hint">
+                    <p>← スキップ | 引き受ける →</p>
+                </div>
+            </div>
+            
+            <!-- ローディング表示 -->
+            <div id="loading" class="loading hidden">
+                <div class="spinner"></div>
+                <p>読み込み中...</p>
+            </div>
+
+            <!-- 完了メッセージ -->
+            <div id="completion-message" class="completion-message hidden">
+                <div class="completion-icon">✓</div>
+                <h2>すべてのタスクを確認しました</h2>
+                <p>ご協力ありがとうございます！</p>
+                <button id="view-status-btn" class="btn btn-secondary">ステータスを確認</button>
+            </div>
+        </section>
+
+        <!-- ステータス更新パネル -->
+        <section id="status-panel-section" class="status-panel-section hidden">
+            <div class="status-panel">
+                <div class="panel-header">
+                    <h2>あなたのタスク</h2>
+                    <button id="back-to-tasks-btn" class="btn-icon" aria-label="タスク選択に戻る">
+                        ←
+                    </button>
+                </div>
+                
+                <div id="my-tasks-list" class="my-tasks-list">
+                    <!-- 自分のタスクが動的に追加されます -->
+                </div>
+
+                <div class="payment-section">
+                    <h3>支払いステータス</h3>
+                    <div class="payment-info">
+                        <p id="payment-amount">支払い額: ¥0</p>
+                        <button id="mark-paid-btn" class="btn btn-success">支払い完了</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- エラーメッセージ -->
+        <div id="error-message" class="error-message hidden">
+            <p id="error-text"></p>
+            <button id="error-close-btn" class="btn-close">×</button>
+        </div>
+
+        <!-- トースト通知 -->
+        <div id="toast" class="toast hidden">
+            <p id="toast-text"></p>
+        </div>
+    </div>
+
+    <!-- Firebase SDK (CDN) -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+    <!-- FirestoreClient -->
+    <script src="firestore-client.js"></script>
+    
+    <!-- アプリケーションスクリプト -->
+    <script src="app.js"></script>
+</body>
+</html>

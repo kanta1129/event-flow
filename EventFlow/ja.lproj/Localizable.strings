@@ -1,0 +1,79 @@
+/*
+  Localizable.strings
+  EventFlow
+
+  エラーメッセージの日本語ローカライゼーション
+  Requirements: 12.1, 12.2, 12.3
+*/
+
+/* Network Errors */
+"error.network.unavailable" = "ネットワーク接続がありません。インターネット接続を確認してください。";
+"error.network.timeout" = "ネットワーク接続がタイムアウトしました。もう一度お試しください。";
+"error.network.general" = "ネットワークエラーが発生しました: %@";
+
+/* AI Errors */
+"error.ai.generation_failed" = "AIによる生成に失敗しました。もう一度お試しください。";
+"error.ai.rate_limit" = "AI生成の制限に達しました。%d秒後に再試行してください。";
+"error.ai.invalid_response" = "AIの応答を解析できませんでした。もう一度お試しください。";
+"error.ai.api_key_invalid" = "AI接続に問題があります。アプリを再起動してください。";
+
+/* Validation Errors */
+"error.validation.failed" = "%@: %@";
+"error.validation.invalid_event" = "イベントデータが無効です。入力内容を確認してください。";
+"error.validation.invalid_task" = "タスクデータが無効です。入力内容を確認してください。";
+"error.validation.invalid_participant" = "参加者データが無効です。入力内容を確認してください。";
+
+/* Firestore Errors */
+"error.firestore.operation_failed" = "データの保存に失敗しました: %@";
+"error.firestore.permission_denied" = "この操作を実行する権限がありません。";
+"error.firestore.document_not_found" = "データが見つかりませんでした。";
+"error.firestore.timeout" = "データベース接続がタイムアウトしました。もう一度お試しください。";
+
+/* Authentication Errors */
+"error.auth.required" = "ログインが必要です。";
+"error.auth.failed" = "認証に失敗しました: %@";
+"error.auth.unauthorized" = "この操作を実行する権限がありません。";
+
+/* General Errors */
+"error.general.unknown" = "予期しないエラーが発生しました: %@";
+"error.general.max_retries" = "最大再試行回数を超えました。しばらくしてから再試行してください。";
+
+/* Recovery Suggestions */
+"error.recovery.check_connection" = "インターネット接続を確認して、もう一度お試しください。";
+"error.recovery.wait_and_retry" = "しばらく待ってから、もう一度お試しください。";
+"error.recovery.retry" = "もう一度お試しください。";
+"error.recovery.check_permissions" = "アプリの権限設定を確認してください。";
+"error.recovery.login" = "ログインしてください。";
+"error.recovery.try_again" = "もう一度お試しください。問題が続く場合は、アプリを再起動してください。";
+
+/* Success Messages */
+"success.event.created" = "イベントを作成しました";
+"success.event.updated" = "イベントを更新しました";
+"success.event.deleted" = "イベントを削除しました";
+"success.task.created" = "タスクを作成しました";
+"success.task.updated" = "タスクを更新しました";
+"success.task.deleted" = "タスクを削除しました";
+"success.participant.added" = "参加者を追加しました";
+"success.participant.updated" = "参加者情報を更新しました";
+"success.participant.removed" = "参加者を削除しました";
+"success.sync.completed" = "同期が完了しました";
+
+/* Confirmation Messages */
+"confirm.event.delete" = "このイベントを削除してもよろしいですか？";
+"confirm.task.delete" = "このタスクを削除してもよろしいですか？";
+"confirm.participant.remove" = "この参加者を削除してもよろしいですか？";
+
+/* Loading Messages */
+"loading.generating" = "AI生成中...";
+"loading.saving" = "保存中...";
+"loading.loading" = "読み込み中...";
+"loading.syncing" = "同期中...";
+"loading.deleting" = "削除中...";
+
+/* Button Labels */
+"button.retry" = "再試行";
+"button.cancel" = "キャンセル";
+"button.ok" = "OK";
+"button.delete" = "削除";
+"button.save" = "保存";
+"button.close" = "閉じる";

@@ -19,6 +19,9 @@ class EventViewModel: ObservableObject {
     /// 現在のイベント
     @Published var event: Event?
     
+    /// 生成されたテンプレート
+    @Published var generatedTemplate: EventTemplate?
+    
     /// ローディング状態
     @Published var isLoading: Bool = false
     
@@ -64,9 +67,8 @@ class EventViewModel: ObservableObject {
                 budget: budget
             )
             
-            // テンプレートからイベントを作成
-            // 注: 実際のイベント作成は別の関数で行うため、ここでは一時的な処理
-            // テンプレートデータは後続の処理で使用される
+            // テンプレートを保存
+            self.generatedTemplate = template
             
             isLoading = false
         } catch {

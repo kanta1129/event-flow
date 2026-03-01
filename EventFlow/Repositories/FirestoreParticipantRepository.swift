@@ -103,6 +103,17 @@ class FirestoreParticipantRepository: ParticipantRepository {
     ///   - eventId: 参加者が属するイベントのID
     /// - Throws: Firestoreエラー
     func updateParticipant(_ participant: Participant, eventId: String) async throws {
+        // ネットワーク接続をチェック
+        if !NetworkMonitor.shared.isConnected {
+            // オフライン時はキューに追加
+            try queueOfflineChange(changeType: .update, participant: participant, eventId: eventId)
+            
+            #if DEBUG
+            print("📝 Participant update queued for offline sync: \(participant.id)")
+            #endif
+            return
+        }
+        
         let db = firebaseManager.getFirestore()
         let docRef = db.collection(eventsCollectionPath)
             .document(eventId)
@@ -115,6 +126,9 @@ class FirestoreParticipantRepository: ParticipantRepository {
             participantData["updatedAt"] = Timestamp(date: Date())
             
             try await docRef.setData(participantData, merge: true)
+            
+            // 成功したらキャッシュも更新
+            LocalCacheManager.shared.cacheParticipant(participant, eventId: eventId)
             
             #if DEBUG
             print("✅ Participant updated: \(participant.id) in event: \(eventId)")
