@@ -1,0 +1,45 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // イベントドキュメント
+    match /events/{eventId} {
+      // 認証済みユーザーは読み取り可能
+      allow read: if request.auth != null;
+      
+      // 作成者のみ書き込み可能
+      allow write: if request.auth != null && 
+                      request.auth.uid == resource.data.organizerId;
+      
+      // タスクサブコレクション
+      match /tasks/{taskId} {
+        // 誰でも読み取り可能（共有URL経由）
+        allow read: if true;
+        
+        // 作成者は全操作可能
+        allow write: if request.auth != null && 
+                        get(/databases/$(database)/documents/events/$(eventId)).data.organizerId == request.auth.uid;
+        
+        // 参加者はステータス更新のみ可能
+        allow update: if request.resource.data.diff(resource.data).affectedKeys()
+                         .hasOnly(['status', 'note', 'updatedAt']);
+      }
+      
+      // 参加者サブコレクション
+      match /participants/{participantId} {
+        allow read: if true;
+        allow create: if true; // 参加者は自分を追加可能
+        allow update: if request.resource.data.diff(resource.data).affectedKeys()
+                         .hasOnly(['paymentStatus', 'paidAmount', 'updatedAt']);
+        allow delete: if request.auth != null && 
+                         get(/databases/$(database)/documents/events/$(eventId)).data.organizerId == request.auth.uid;
+      }
+      
+      // 買い物リストサブコレクション
+      match /shoppingList/{itemId} {
+        allow read: if true;
+        allow write: if request.auth != null && 
+                        get(/databases/$(database)/documents/events/$(eventId)).data.organizerId == request.auth.uid;
+      }
+    }
+  }
+}

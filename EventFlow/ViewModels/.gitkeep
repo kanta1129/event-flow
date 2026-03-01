@@ -1,0 +1,2 @@
+# ViewModels Directory
+# ビジネスロジックと状態管理（EventViewModel, TaskViewModel, ParticipantViewModelなど）を配置
